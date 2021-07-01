@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Dictionary<string, List<String>> questions_dict = new Dictionary<string, List<String>>();
+
+    //Fragen-Dictionary
+    List<string> valSetOne = new List<string>();
+    valSetOne.Add("Frage 1");
+    valSetOne.Add("Frage 2");
+
+    questions_dict.Add("Erwartungskonformität", valSetOne);
+    questions_dict.Add("Indivdualisierbarkeit", valSetOne);
+    questions_dict.Add("Fehlertoleranz", valSetOne);
+    questions_dict.Add("Aufgabenangemessenheit", valSetOne);
+    questions_dict.Add("Steuerbarkeit", valSetOne);
+
+    //Projekt-Dictionary
+    Dictionary<string, List<String>> project_dict = new Dictionary<string, List<String>>();
+
+    List<string> valSetTwo = new List<string>();
+    valSetTwo.Add("Apple");
+    valSetTwo.Add("Aeroplane");
+
+    project_dict.Add("Projekt 1", valSetTwo);
+    project_dict.Add("Projekt 2", valSetTwo);
+    project_dict.Add("Projekt 3", valSetTwo);
+    project_dict.Add("Projekt 4", valSetTwo);
+    project_dict.Add("Projekt 5", valSetTwo);
+
+}
+
+<!--Erste Zeile-->
+<div class="row">
+
+    <div class="col">
+        <a href="/Projekt/Index" class="m-3">Zurück</a>
+        <button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop">Menü</button>
+    </div>
+</div>
+<div class="row">
+    <!--linke Spalte-->
+    <div class="col">
+        @foreach (KeyValuePair<string, List<string>> entry in questions_dict)
+        {
+            <div class="row">
+                <div class="col">
+                    <h2 class="categoryName">@entry.Key</h2>
+                </div>
+                <div class="col-1">
+                    <button type="button" class="btn">-</button>
+                </div>
+            </div>
+            foreach (var question in entry.Value)
+            {
+                <div class="row">
+                    <div class="col">@question</div>
+                    <div class="col">
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-outline-secondary">1</button>
+                            <button type="button" class="btn btn-outline-secondary">2</button>
+                            <button type="button" class="btn btn-outline-secondary">3</button>
+                            <button type="button" class="btn btn-outline-secondary">4</button>
+                            <button type="button" class="btn btn-outline-secondary">5</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-outline-secondary">1</button>
+                            <button type="button" class="btn btn-outline-secondary">2</button>
+                            <button type="button" class="btn btn-outline-secondary">3</button>
+                            <button type="button" class="btn btn-outline-secondary">4</button>
+                            <button type="button" class="btn btn-outline-secondary">5</button>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn">-</button>
+                    </div>
+                </div>
+            }
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-outline-primary">+</button>
+            </div>
+
+        }
+        <div class="d-grid gap-2">
+            <button type="button" class="btn btn-outline-primary">+</button>
+        </div>
+    </div>
+    <!--rechte Spalte-->
+    <div class="col">
+        <div class="row">
+            <textarea placeholder="Kommentar" style="min-width: 100%" rows="5"></textarea>
+        </div>
+        <div class="row">
+            <div class="radarChart"></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-primary btn-block">PDF</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary btn-block">Freigeben</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--Offcanvas Menu-->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWithBackdropLabel">Offcanvas with backdrop</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        @foreach (KeyValuePair<string, List<string>> entry in project_dict)
+        {
+            <a href="#">@entry.Key </a><br />
+        }
+    </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+
+<script src="/Scripts/RadarChart.js"></script>
+<script>
+    var categoryList = [];
+    var categorySelector = document.querySelectorAll("[class='categoryName']");
+    for (var i = 0; i < categorySelector.length; i++) {
+        categoryList.push(categorySelector[i].textContent);
+    };
+
+
+    /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
+
+    //////////////////////////////////////////////////////////////
+    //////////////////////// Set-Up //////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    var margin = { top: 100, right: 100, bottom: 100, left: 100 },
+        width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
+        height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+
+    //////////////////////////////////////////////////////////////
+    ////////////////////////// Data //////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    var data = [
+        [
+            { axis: "Battery Life", value: 5 },
+            { axis: "Brand", value: 2 },
+            { axis: "Contract Cost", value: 3 },
+            { axis: "Design And Quality", value: 4 },
+            { axis: "Have Internet Connectivity", value: 1 },
+            { axis: "Large Screen", value: 4 },
+            { axis: "Price Of Device", value: 5 },
+            { axis: "To Be A Smartphone", value: 1 },
+            { axis: "To Be A Smartphone", value: 2 }
+        ],
+    ];
+                         //////////////////////////////////////////////////////////////
+                         //////////////////// Draw the Chart //////////////////////////
+                         //////////////////////////////////////////////////////////////
+
+                         var color = d3.scale.ordinal()
+                             .range(["#EDC951", "#CC333F", "#00A0B0"]);
+
+                         var radarChartOptions = {
+        w: width,
+        h: height,
+        margin: margin,
+        maxValue: 0.5,
+        levels: 5,
+        roundStrokes: true,
+        color: color
+    };
+                     //Call function to draw the Radar chart
+                     RadarChart(".radarChart", data, radarChartOptions);</script>

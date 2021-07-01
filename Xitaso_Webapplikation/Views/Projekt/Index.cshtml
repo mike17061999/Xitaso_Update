@@ -1,0 +1,127 @@
+﻿<!--Projekt-Index Seite / Startseite der App-->
+@model IEnumerable<Xitaso_Webapplikation.Models.Projekt>
+<!-- model IEnumerable Xitaso_Webapplikation.Models.Anlayse NUR EIN MODEL MÖGLICH!!!-->
+
+@{
+    ViewBag.Title = "Projekte";
+    var analysis = new List<string> { "Analyse 1", "Analyse 2", "Analyse 3", "Analyse 4", "Analyse 5", "Analyse 6" };
+    Dictionary<string, List<String>> project_dict = new Dictionary<string, List<String>>();
+
+    List<string> valSetOne = new List<string>();
+    valSetOne.Add("Apple");
+    valSetOne.Add("Aeroplane");
+
+    project_dict.Add("Projekt 1", valSetOne);
+    project_dict.Add("Projekt 2", valSetOne);
+    project_dict.Add("Projekt 3", valSetOne);
+    project_dict.Add("Projekt 4", valSetOne);
+    project_dict.Add("Projekt 5", valSetOne);
+}
+<div class="row">
+
+    <div class="col-3">
+        <div class="d-grid gap-2">
+            <div class="col-6 text-right">
+                <a asp-controller="Projekt" asp-action="Create" class="btn btn-primary">Neues Projekt</a>
+            </div>
+        </div>
+        <!--Karten für einzelne Projekte-->
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            Projekt Name
+                        </th>
+                        <th>
+                            Projekt Beschreibung
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var projekt in Model)
+                    {
+                        <tr>
+                            <td width="30%">@projekt.Name</td>
+                            <td width="30%">@projekt.ProjectDescription</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Empty</p>
+        }
+
+    </div>
+    <!--Rechte Spalte / Analysen-->
+    <div class="col">
+        <div class="d-grid gap-2">
+            <a class="btn btn-primary" href="/Analyse/Create">
+                Neue Analyse
+            </a>
+        </div>
+        <div class="overflow-auto">
+            <div class="overflow-auto">
+                <!--foreach(string value in project_dict["elmId"])-->
+                @for (var i = 0; i < analysis.Count; i++)
+                {
+                    <a href="/Analyse/Index" class="row">
+                        <div class="col">
+                            <h5>@analysis[i]</h5>
+                        </div>
+                        <div class="col text-end">
+                            <h5>Right-aligned Text</h5>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--Modals-->
+<!--Analyse Popup-->
+<div class="modal fade" id="analysisModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Neue Analyse erstellen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Projekt löschen Modal -->
+<div class="modal fade" id="deleteProjectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Projekt löschen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <b>Sind Sie sicher, dass Sie das Projekt wirklich löschen wollen?</b> <br />
+                <i>Das Projekt sowie alle in dem Projekt enthaltenen Analysen werden unwiderruflich gelöscht.</i>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                <button type="button" class="btn btn-primary">Projekt löschen</button>
+            </div>
+        </div>
+    </div>
+</div>
